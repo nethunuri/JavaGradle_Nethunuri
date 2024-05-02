@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    jcenter() // You can use any other repository you need
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+    // Add more dependencies as needed
+}
+
+// Define the 'test' task
+test {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath += sourceSets.main.runtimeClasspath
+}
+
+// Define the 'package' task
+jar {
+    from sourceSets.main.output
+    manifest {
+        attributes 'Main-Class': 'com.hello.HelloWorld'
+    }
+    archiveFileName = "${project.name}.jar"
+    destinationDirectory = file("${buildDir}/libs")
+}
+
+// Define the 'run' task
+run {
+    mainClass = 'com.hello.HelloWorld'
+    classpath = files("${buildDir}/libs/${project.name}.jar")
+}
+
+// Define the 'clean' task
+clean {
+    delete "${buildDir}"
+}
